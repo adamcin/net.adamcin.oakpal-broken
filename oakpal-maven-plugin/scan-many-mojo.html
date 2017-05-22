@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20170522" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>OakPAL - OakPAL Maven Plugin &#x2013; oakpal:scan</title>
+    <title>OakPAL - OakPAL Maven Plugin &#x2013; oakpal:scan-many</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.5.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -205,17 +205,22 @@
             
   
     <div class="section">
-<h2><a name="oakpal:scan"></a>oakpal:scan</h2>
+<h2><a name="oakpal:scan-many"></a>oakpal:scan-many</h2>
       
 <p><b>Full name</b>:</p>
       
-<p>net.adamcin.oakpal:oakpal-maven-plugin:0.3.0-SNAPSHOT:scan</p>
+<p>net.adamcin.oakpal:oakpal-maven-plugin:0.3.0-SNAPSHOT:scan-many</p>
       
 <p><b>Description</b>:</p>
       
-<div>Scans the main project artifact by simulating package installation
-and listening for violations reported by the configured
-<tt>scriptReporters</tt>.</div>
+<div>Scans a list of artifacts by simulating package installation and
+listening for violations reported by the configured
+<tt>scriptReporters</tt>. This goal supports the use of script
+reporters that must evaluate the side effects of installing
+packages in combination, such as for detection of workspace filter
+overlap. More simply, this goal can be used in a sidecar project to
+scan multiple artifacts produced by previous builds using a common
+set of script reporters.</div>
       
 <p><b>Attributes</b>:</p>
       
@@ -223,7 +228,7 @@ and listening for violations reported by the configured
         
 <li>Requires a Maven project to be executed.</li>
         
-<li>Binds by default to the <a class="externalLink" href="http://maven.apache.org/ref/current/maven-core/lifecycles.html">lifecycle phase</a>: <tt>integration-test</tt>.</li>
+<li>Since version: <tt>0.3.0</tt>.</li>
       </ul>
       
 <div class="section">
@@ -248,7 +253,7 @@ and listening for violations reported by the configured
             
 <td><tt>List</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Specify a list of Compact NodeType Definition (CND) files to import
 before any packages are installed during the scan. This is usually
@@ -263,7 +268,7 @@ it to a file in your project code base.<br /></td>
             
 <td><tt>Violation$Severity</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Specify the minimum violation severity level that will trigger
 plugin execution failure. Valid options are
@@ -278,7 +283,7 @@ reported as MAJOR by default.<br /><b>Default value is</b>: <tt>MAJOR</tt>.<br /
             
 <td><tt>List</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Specify a list of paths with associated primaryType and mixinTypes
 values to create in the repository before installing any packages
@@ -311,7 +316,7 @@ and a primaryType of &quot;rep:AuthorizableFolder&quot;.
             
 <td><tt>List</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Specify a list of additional JCR namespaces to register before
 installing any packages for the scan. For example: 
@@ -333,7 +338,7 @@ installing any packages for the scan. For example:
             
 <td><tt>List</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Specify a list of additional JCR privileges to register before
 installing any packages for the scan. For example: 
@@ -352,7 +357,7 @@ installing any packages for the scan. For example:
             
 <td><tt>List</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Specify a list of content-package artifacts to download and
 pre-install before the scanned packages. For example: 
@@ -376,10 +381,67 @@ pre-install before the scanned packages. For example:
             
 <td><tt>List</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Specify a list of content package files by path to pre-install,
 which have already been built or downloaded in a previous phase.<br /></td>
+          </tr>
+          
+<tr class="a">
+            
+<td><b><a href="#scanArtifacts">scanArtifacts</a></b></td>
+            
+<td><tt>List</tt></td>
+            
+<td><tt>0.3.0</tt></td>
+            
+<td>Specify a list of content-package artifacts to download and scan in
+sequence. For example: 
+
+<div>
+<pre>
+&lt;scanArtifacts&gt;
+  &lt;scanArtifact&gt;
+    &lt;groupId&gt;com.acmecorp&lt;/groupId&gt;
+    &lt;artifactId&gt;acmecorp-common-ui.apps&lt;/artifactId&gt;
+    &lt;version&gt;0.1.0-SNAPSHOT&lt;/version&gt;
+    &lt;type&gt;zip&lt;/type&gt;
+  &lt;/scanArtifact&gt;
+  &lt;scanArtifact&gt;
+    &lt;groupId&gt;com.acmecorp&lt;/groupId&gt;
+    &lt;artifactId&gt;national-site-ui.apps&lt;/artifactId&gt;
+    &lt;version&gt;0.1.0-SNAPSHOT&lt;/version&gt;
+    &lt;type&gt;zip&lt;/type&gt;
+  &lt;/scanArtifact&gt;
+  &lt;scanArtifact&gt;
+    &lt;groupId&gt;com.acmecorp&lt;/groupId&gt;
+    &lt;artifactId&gt;northwest-region-ui.apps&lt;/artifactId&gt;
+    &lt;version&gt;0.1.0-SNAPSHOT&lt;/version&gt;
+    &lt;type&gt;zip&lt;/type&gt;
+  &lt;/scanArtifact&gt;
+&lt;/scanArtifacts&gt;
+</pre></div><br /></td>
+          </tr>
+          
+<tr class="b">
+            
+<td><b><a href="#scanFiles">scanFiles</a></b></td>
+            
+<td><tt>List</tt></td>
+            
+<td><tt>0.3.0</tt></td>
+            
+<td>Specify a list of local package files to add to the list to scan.
+These will be installed after those listed in
+<tt>scanArtifacts</tt>. For example: 
+
+<div>
+<pre>
+&lt;scanFiles&gt;
+  &lt;scanFile&gt;target/myPackages/firstPackage.zip&lt;/scanFile&gt;
+  &lt;scanFile&gt;target/myPackages/secondPackage.zip&lt;/scanFile&gt;
+&lt;/scanFiles&gt;
+</pre></div><br /></td>
           </tr>
           
 <tr class="a">
@@ -388,7 +450,7 @@ which have already been built or downloaded in a previous phase.<br /></td>
             
 <td><tt>List</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Specify a list of javascript files implementing the
 <tt>PackageListener</tt> functions that will receive events for
@@ -401,9 +463,9 @@ each scanned package.<br /></td>
             
 <td><tt>boolean</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
-<td>Specifically skip this plugin's execution.<br /><b>User property is</b>: <tt>oakpal.scan.skip</tt>.<br /></td>
+<td>Specifically skip this plugin's execution.<br /><b>User property is</b>: <tt>oakpal.scan-many.skip</tt>.<br /></td>
           </tr>
           
 <tr class="a">
@@ -412,7 +474,7 @@ each scanned package.<br /></td>
             
 <td><tt>boolean</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Conventional switch to skip integration-test phase goals.<br /><b>User property is</b>: <tt>skipITs</tt>.<br /></td>
           </tr>
@@ -423,7 +485,7 @@ each scanned package.<br /></td>
             
 <td><tt>boolean</tt></td>
             
-<td><tt>-</tt></td>
+<td><tt>0.3.0</tt></td>
             
 <td>Conventional switch to skip test and integration-test phase goals.<br /><b>User property is</b>: <tt>skipTests</tt>.<br /></td>
           </tr>
@@ -445,6 +507,8 @@ it to a file in your project code base.</div>
           
 <li><b>Type</b>: <tt>java.util.List</tt></li>
           
+<li><b>Since</b>: <tt>0.3.0</tt></li>
+          
 <li><b>Required</b>: <tt>No</tt></li>
         </ul><hr />
 <p><b><a name="failOnSeverity">failOnSeverity</a>:</b></p>
@@ -458,6 +522,8 @@ reported as MAJOR by default.</div>
 <ul>
           
 <li><b>Type</b>: <tt>net.adamcin.oakpal.core.Violation$Severity</tt></li>
+          
+<li><b>Since</b>: <tt>0.3.0</tt></li>
           
 <li><b>Required</b>: <tt>No</tt></li>
           
@@ -493,6 +559,8 @@ and a primaryType of &quot;rep:AuthorizableFolder&quot;.
           
 <li><b>Type</b>: <tt>java.util.List</tt></li>
           
+<li><b>Since</b>: <tt>0.3.0</tt></li>
+          
 <li><b>Required</b>: <tt>No</tt></li>
         </ul><hr />
 <p><b><a name="jcrNamespaces">jcrNamespaces</a>:</b></p>
@@ -514,6 +582,8 @@ installing any packages for the scan. For example:
           
 <li><b>Type</b>: <tt>java.util.List</tt></li>
           
+<li><b>Since</b>: <tt>0.3.0</tt></li>
+          
 <li><b>Required</b>: <tt>No</tt></li>
         </ul><hr />
 <p><b><a name="jcrPrivileges">jcrPrivileges</a>:</b></p>
@@ -531,6 +601,8 @@ installing any packages for the scan. For example:
 <ul>
           
 <li><b>Type</b>: <tt>java.util.List</tt></li>
+          
+<li><b>Since</b>: <tt>0.3.0</tt></li>
           
 <li><b>Required</b>: <tt>No</tt></li>
         </ul><hr />
@@ -555,6 +627,8 @@ pre-install before the scanned packages. For example:
           
 <li><b>Type</b>: <tt>java.util.List</tt></li>
           
+<li><b>Since</b>: <tt>0.3.0</tt></li>
+          
 <li><b>Required</b>: <tt>No</tt></li>
         </ul><hr />
 <p><b><a name="preInstallFiles">preInstallFiles</a>:</b></p>
@@ -565,6 +639,67 @@ which have already been built or downloaded in a previous phase.</div>
 <ul>
           
 <li><b>Type</b>: <tt>java.util.List</tt></li>
+          
+<li><b>Since</b>: <tt>0.3.0</tt></li>
+          
+<li><b>Required</b>: <tt>No</tt></li>
+        </ul><hr />
+<p><b><a name="scanArtifacts">scanArtifacts</a>:</b></p>
+        
+<div>Specify a list of content-package artifacts to download and scan in
+sequence. For example: 
+
+<div>
+<pre>
+&lt;scanArtifacts&gt;
+  &lt;scanArtifact&gt;
+    &lt;groupId&gt;com.acmecorp&lt;/groupId&gt;
+    &lt;artifactId&gt;acmecorp-common-ui.apps&lt;/artifactId&gt;
+    &lt;version&gt;0.1.0-SNAPSHOT&lt;/version&gt;
+    &lt;type&gt;zip&lt;/type&gt;
+  &lt;/scanArtifact&gt;
+  &lt;scanArtifact&gt;
+    &lt;groupId&gt;com.acmecorp&lt;/groupId&gt;
+    &lt;artifactId&gt;national-site-ui.apps&lt;/artifactId&gt;
+    &lt;version&gt;0.1.0-SNAPSHOT&lt;/version&gt;
+    &lt;type&gt;zip&lt;/type&gt;
+  &lt;/scanArtifact&gt;
+  &lt;scanArtifact&gt;
+    &lt;groupId&gt;com.acmecorp&lt;/groupId&gt;
+    &lt;artifactId&gt;northwest-region-ui.apps&lt;/artifactId&gt;
+    &lt;version&gt;0.1.0-SNAPSHOT&lt;/version&gt;
+    &lt;type&gt;zip&lt;/type&gt;
+  &lt;/scanArtifact&gt;
+&lt;/scanArtifacts&gt;
+</pre></div></div>
+        
+<ul>
+          
+<li><b>Type</b>: <tt>java.util.List</tt></li>
+          
+<li><b>Since</b>: <tt>0.3.0</tt></li>
+          
+<li><b>Required</b>: <tt>No</tt></li>
+        </ul><hr />
+<p><b><a name="scanFiles">scanFiles</a>:</b></p>
+        
+<div>Specify a list of local package files to add to the list to scan.
+These will be installed after those listed in
+<tt>scanArtifacts</tt>. For example: 
+
+<div>
+<pre>
+&lt;scanFiles&gt;
+  &lt;scanFile&gt;target/myPackages/firstPackage.zip&lt;/scanFile&gt;
+  &lt;scanFile&gt;target/myPackages/secondPackage.zip&lt;/scanFile&gt;
+&lt;/scanFiles&gt;
+</pre></div></div>
+        
+<ul>
+          
+<li><b>Type</b>: <tt>java.util.List</tt></li>
+          
+<li><b>Since</b>: <tt>0.3.0</tt></li>
           
 <li><b>Required</b>: <tt>No</tt></li>
         </ul><hr />
@@ -578,6 +713,8 @@ each scanned package.</div>
           
 <li><b>Type</b>: <tt>java.util.List</tt></li>
           
+<li><b>Since</b>: <tt>0.3.0</tt></li>
+          
 <li><b>Required</b>: <tt>No</tt></li>
         </ul><hr />
 <p><b><a name="skip">skip</a>:</b></p>
@@ -588,9 +725,11 @@ each scanned package.</div>
           
 <li><b>Type</b>: <tt>boolean</tt></li>
           
+<li><b>Since</b>: <tt>0.3.0</tt></li>
+          
 <li><b>Required</b>: <tt>No</tt></li>
           
-<li><b>User Property</b>: <tt>oakpal.scan.skip</tt></li>
+<li><b>User Property</b>: <tt>oakpal.scan-many.skip</tt></li>
         </ul><hr />
 <p><b><a name="skipITs">skipITs</a>:</b></p>
         
@@ -599,6 +738,8 @@ each scanned package.</div>
 <ul>
           
 <li><b>Type</b>: <tt>boolean</tt></li>
+          
+<li><b>Since</b>: <tt>0.3.0</tt></li>
           
 <li><b>Required</b>: <tt>No</tt></li>
           
@@ -611,6 +752,8 @@ each scanned package.</div>
 <ul>
           
 <li><b>Type</b>: <tt>boolean</tt></li>
+          
+<li><b>Since</b>: <tt>0.3.0</tt></li>
           
 <li><b>Required</b>: <tt>No</tt></li>
           
