@@ -1,4 +1,5 @@
 net.adamcin.oakpal.core
+net.adamcin.oakpal.core.checks
 net.adamcin.oakpal.core.jcrfacade
 net.adamcin.oakpal.core.jcrfacade.lock
 net.adamcin.oakpal.core.jcrfacade.nodetype
